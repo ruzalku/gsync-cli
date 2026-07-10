@@ -24,6 +24,10 @@ profile.cov
 go.work
 go.work.sum
 
+# Run files
+gsync
+gsynccli
+
 # env file
 .env
 
