@@ -24,6 +24,10 @@ func Start(ctx context.Context, cmd *cli.Command) error {
 	select{}
 }
 
+func Login(ctx context.Context, cmd *cli.Command) error {
+	return nil
+}
+
 func Exit(ctx context.Context, cmd *cli.Command) error {
 	return nil
 }
