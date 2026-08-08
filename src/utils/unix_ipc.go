@@ -6,6 +6,8 @@ import (
 	"net"
 )
 
+const ConnectPath string = "/tmp/gsynccli.sock"
+
 func newListener(path string) (net.Listener, error) {
 	return net.Listen("unix", path)
 }

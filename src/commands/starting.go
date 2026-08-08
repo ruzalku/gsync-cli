@@ -2,11 +2,13 @@ package commands
 
 import (
 	"log"
-	"time"
 	"context"
 	"io"
+	"net"
+	"os"
 
 	"github.com/urfave/cli/v3"
+	"gsynccli/src/utils"
 )
 
 
@@ -14,14 +16,40 @@ func Start(ctx context.Context, cmd *cli.Command) error {
 	if cmd.Bool("quiet") {
 		log.SetOutput(io.Discard)
 	}
-	go func() {
-		for {
-			time.Sleep(time.Second * 2)
-			log.Print("gsynccli started")
-		}
-	}()
+	_ = os.Remove(utils.ConnectPath)
+	l, err := net.Listen("unix", utils.ConnectPath)
+	if err != nil {
+		return err
+	}
+
+	defer l.Close()
 	log.Print("START")
-	select{}
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			return err
+		}
+
+		go func(c net.Conn) {
+			defer c.Close()
+			buf := make([]byte, 1024)
+			n, err := c.Read(buf)
+
+			if err != nil {
+				log.Fatalln(err)
+				return
+			}
+
+			_, err = c.Write([]byte(buf[:n]))
+
+			if err != nil {
+				log.Fatalln(err)
+				return
+			}
+		}(conn)
+		
+	}
 }
 
 func Login(ctx context.Context, cmd *cli.Command) error {

@@ -7,6 +7,7 @@ import (
 	"github.com/Microsoft/go-winio"
 )
 
+const ConnectPath string = `\\.\`
 
 func newListener(path string) (net.Listener, error) {
 	return winio.ListenPipe(path, nil)
