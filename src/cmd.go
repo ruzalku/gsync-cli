@@ -50,11 +50,6 @@ func GetCMD() *cli.Command {
 				Usage: "List of connected to Google Drive files",
 				Action: commands.GetListFiles,
 			},
-			{
-				Name: "login",
-				Usage: "Login to google account",
-				Action: commands.Login,
-			},
 		},
 	}
 

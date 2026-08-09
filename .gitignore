@@ -34,4 +34,4 @@ gsynccli
 # Editor/IDE
 # .idea/
 # .vscode/
-DESIGN_DECISIONS.md
+DESIGN*.md

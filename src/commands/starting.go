@@ -41,7 +41,8 @@ func Start(ctx context.Context, cmd *cli.Command) error {
 				return
 			}
 
-			_, err = c.Write([]byte(buf[:n]))
+			msg := "1 " + string(buf[:n])
+			_, err = c.Write([]byte(msg))
 
 			if err != nil {
 				log.Fatalln(err)

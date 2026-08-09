@@ -2,7 +2,7 @@ package utils
 
 import (
 	"net"
-	"log"
+	_ "log"
 )
 
 func GetListener(path string) (net.Listener, error) {
@@ -25,14 +25,9 @@ func AddCommand(path string, command string) error {
 
 	_, err = client.Write([]byte(command))
 
-	buf := make([]byte, 1024)
-	n, err := client.Read(buf)
-
 	if err != nil {
 		return err
 	}
 
-	log.Println(string(buf[:n]))
-
-	return err
+	return ProcessDaemonMessage(client)
 }
