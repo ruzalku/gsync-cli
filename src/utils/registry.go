@@ -11,14 +11,15 @@ import (
 )
 
 type GFile struct {
-	id string
-	path string
-	hash string
-	lastSave time.Time
-	autosave bool
+	Id string `json:"id"`
+	Path string `json:"path"`
+	Hash string `json:"hash"`
+	LastSave time.Time `json:"last_save"`
+	Autosave bool `json:"autosave"`
 }
 
 
+// Get the path to the registry file
 func getRegistryPath() string {
 	builder := &strings.Builder{}
 
@@ -33,6 +34,7 @@ func getRegistryPath() string {
 	return builder.String()
 }
 
+// Create registry file
 func createRegistryFile(path string) error {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -55,6 +57,7 @@ func createRegistryFile(path string) error {
 }
 
 
+// Add an entry to the registry file
 func (f GFile) AddToRegistry() error {
 	regPath := getRegistryPath()
 	err := createRegistryFile(regPath)
@@ -122,4 +125,15 @@ func (f GFile) AddToRegistry() error {
 	_, err = file.Write(addByteCode)
 	
 	return err
+}
+
+// Update the entry in the registry file
+func (f GFile) UpdateFileRegistry() error {
+	return nil
+}
+
+
+// Check the file of existing in registry
+func (f GFile) CheckInRegistry() (bool, error) {
+	return true, nil
 }
