@@ -94,14 +94,10 @@ func (f GFile) SaveFile (service *drive.Service) error {
 	
 	fileMetadata := &drive.File{
 		Name: fileName,
-		MimeType: mimeType,
 	}
 
 	if mimeType == "" {
-		fileMetadata = &drive.File{
-			Name: fileName,
-		}
-
+		fileMetadata.MimeType = mimeType
 	}
 
 	has, err := f.ExistingInRegistry()
