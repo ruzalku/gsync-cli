@@ -1,9 +1,10 @@
 package utils
 
 import (
+	"errors"
 	"os"
-	"path/filepath"
 	"path"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -71,13 +72,23 @@ func (f GFile) SaveFile (service *drive.Service) error {
 
 	defer file.Close()
 
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return err
+	}
+
+	if fileInfo.Size() == 0 {
+		return errors.New("This file empty or corrupted, please add data to file")
+	}
+
 	mimeType := getMimeType(f.Path)
 
 	fileName := filepath.Base(f.Path)
 	
+	
 	fileMetadata := &drive.File{
 		Name: fileName,
-		MimeType: getMimeType(f.Path),
+		MimeType: mimeType,
 	}
 
 	if mimeType == "" {
