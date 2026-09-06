@@ -63,28 +63,34 @@ func NormalizePath(p string) (string, error) {
 	return p, nil
 }
 
-func (f GFile) SaveFile (service *drive.Service) error {
+func (f GFile) getFile() (*os.File, error) {
 	file, err := os.Open(f.Path)
 	
 	if err != nil {
-		return err
+		return nil, err
 	}
-
-	defer file.Close()
 
 	fileInfo, err := file.Stat()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if fileInfo.Size() == 0 {
-		return errors.New("This file empty or corrupted, please add data to file")
+		return nil, errors.New("This file empty or corrupted, please add data to file")
 	}
 
-	mimeType := getMimeType(f.Path)
+	return file, nil
+}
 
+func (f GFile) SaveFile (service *drive.Service) error {
+	file, err := f.getFile()
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	mimeType := getMimeType(f.Path)
 	fileName := filepath.Base(f.Path)
-	
 	
 	fileMetadata := &drive.File{
 		Name: fileName,
