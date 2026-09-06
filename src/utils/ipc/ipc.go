@@ -1,8 +1,10 @@
-package utils
+package ipc
 
 import (
 	"net"
 	_ "log"
+
+	"gsynccli/src/utils"
 )
 
 func GetListener(path string) (net.Listener, error) {
@@ -14,7 +16,7 @@ func GetClient(path string) (net.Conn, error) {
 }
 
 
-func AddCommand(path string, command string) error {
+func AddCommand(path string, command []byte) error {
 	client, err := GetClient(path)
 
 	if err != nil {
@@ -23,11 +25,11 @@ func AddCommand(path string, command string) error {
 
 	defer client.Close()
 
-	_, err = client.Write([]byte(command))
+	_, err = client.Write(command)
 
 	if err != nil {
 		return err
 	}
 
-	return ProcessDaemonMessage(client)
+	return utils.ProcessDaemonMessage(client)
 }

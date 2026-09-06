@@ -1,13 +1,13 @@
 //go:build windows
 
-package utils
+package ipc
 
 import (
 	"net"
 	"github.com/Microsoft/go-winio"
 )
 
-const ConnectPath string = `\\.\`
+const ConnectPath string = `\\.\pipe\gsynccli`
 
 func newListener(path string) (net.Listener, error) {
 	return winio.ListenPipe(path, nil)

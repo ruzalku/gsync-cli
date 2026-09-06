@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"strings"
 	"net"
 )
 
@@ -14,11 +13,10 @@ func ProcessDaemonMessage(client net.Conn) error {
 		return err
 	}
 
-	msgArr := strings.Split(string(buf[:n]), " ")
-	status := msgArr[0]
-	text := msgArr[1]
+	status := string(buf[0])
+	text := string(buf[1:n])
 
-	if status == "1" {
+	if status == "0" {
 		return errors.New(text)
 	}
 

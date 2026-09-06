@@ -1,6 +1,6 @@
 //go:build !windows
 
-package utils
+package ipc
 
 import (
 	"net"
