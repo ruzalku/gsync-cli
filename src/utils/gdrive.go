@@ -96,7 +96,7 @@ func (f GFile) SaveFile (service *drive.Service) error {
 		Name: fileName,
 	}
 
-	if mimeType == "" {
+	if mimeType != "" {
 		fileMetadata.MimeType = mimeType
 	}
 

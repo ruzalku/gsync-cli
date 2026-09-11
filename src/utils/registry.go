@@ -93,7 +93,7 @@ func (f GFile) AddToRegistry() error {
 	)
 
 	if err != nil {
-		return nil
+		return err
 	}
 	defer file.Close()
 
@@ -181,6 +181,10 @@ func (f GFile) UpdateFileRegistry() error {
 				return err
 			}
 
+			err = file.Truncate(0)
+			if err != nil {
+				return err
+			}
 			_, err = file.Seek(0, io.SeekStart)
 			if err != nil {
 				return err

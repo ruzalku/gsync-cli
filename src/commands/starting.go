@@ -22,7 +22,7 @@ func Start(ctx context.Context, cmd *cli.Command) error {
 		log.SetOutput(io.Discard)
 	}
 	_ = os.Remove(ipc.ConnectPath)
-	l, err := net.Listen("unix", ipc.ConnectPath)
+	l, err := ipc.GetListener(ipc.ConnectPath)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,6 @@ func Start(ctx context.Context, cmd *cli.Command) error {
 			n, err := c.Read(buf)
 
 			if err != nil {
-				log.Fatalln(err)
 				return
 			}
 
@@ -60,7 +59,6 @@ func Start(ctx context.Context, cmd *cli.Command) error {
 			_, err = c.Write([]byte(msg))
 
 			if err != nil {
-				log.Fatalln(err)
 				return
 			}
 		}(conn)
